@@ -1,102 +1,137 @@
 # Hanzi Forge 漢字鍛造
 
-**Русско-китайское оффлайн приложение для изучения китайского языка**
+**Русско-китайское веб-приложение для изучения китайского языка**
 
 ![HSK1-6](https://img.shields.io/badge/HSK-1--6-red)
-![Оффлайн](https://img.shields.io/badge/Режим-Оффлайн-green)
-![PWA](https://img.shields.io/badge/PWA-готово-blue)
+![Docker](https://img.shields.io/badge/Docker-ready-blue)
+![Python](https://img.shields.io/badge/Python-3.9+-green)
+![React](https://img.shields.io/badge/React-18-61dafb)
 
-## 🚀 Быстрый старт
+---
+
+## 🚀 Быстрый старт (Docker — рекомендуется)
+
+Самый простой способ запустить на любом компьютере:
+
+### Требования
+- [Docker Desktop](https://docs.docker.com/desktop/install/windows-install/) (Windows / macOS / Linux)
+- [Git](https://git-scm.com/downloads)
+
+### Запуск
+
+```bash
+git clone https://github.com/dexter878/HanziForge.git
+cd HanziForge
+docker compose up --build -d
+```
+
+Первый запуск займёт 2–5 минут (скачивание образов, установка зависимостей, заполнение БД).
+
+### Открыть
+
+| Сервис | URL |
+|--------|-----|
+| 🌐 Приложение | http://localhost:5001 |
+| 📖 API документация | http://localhost:5000/docs |
+
+### Остановить / Перезапустить
+
+```bash
+docker compose down          # остановить
+docker compose up --build -d # пересобрать и запустить
+docker compose logs -f       # логи
+```
+
+> 📝 Подробная Docker-инструкция: [DOCKER.md](DOCKER.md)
+
+---
+
+## 💻 Запуск без Docker (для разработки)
 
 ### Требования
 - Python 3.9+
 - Node.js 18+
 - npm
 
-### Установка (один раз)
+### Установка
 
-```powershell
-# 1. Backend зависимости
-cd R:\project\HanziForge\backend
+```bash
+# 1. Backend
+cd backend
 pip install -r requirements.txt
-
-# 2. Заполнение базы данных
 python scripts/populate_db.py
 
-# 3. Frontend зависимости
-cd R:\project\HanziForge\frontend
+# 2. Frontend
+cd ../frontend
 npm install
 ```
 
-### Запуск приложения
+### Запуск (два терминала)
 
-**Откройте ДВА терминала:**
-
-**Терминал 1 — Backend API (FastAPI):**
-```powershell
-cd R:\project\HanziForge\backend
+**Терминал 1 — Backend:**
+```bash
+cd backend
 python -m uvicorn app.main:app --host 0.0.0.0 --port 5000
 ```
 
-**Терминал 2 — Frontend (Vite + React):**
-```powershell
-cd R:\project\HanziForge\frontend
+**Терминал 2 — Frontend:**
+```bash
+cd frontend
 npm run dev
 ```
 
-### Открыть приложение
+Или одной командой (PowerShell):
+```powershell
+.\run.ps1
+```
 
-После запуска обоих серверов откройте в браузере:
-
-**http://localhost:5001**
-
-> ⚠️ Если порт 5001 занят, Vite автоматически выберет другой (5002, 5003...). 
-> Смотрите вывод в терминале!
+Откройте **http://localhost:5001**
 
 ---
 
 ## 🎯 Возможности
 
-| # | Функция | Путь | Описание |
-|---|---------|------|----------|
-| 1 | 📖 Словарь | `/словарь` | Поиск иероглифов, пиньинь, stroke order |
-| 2 | ✍️ Письмо | `/письмо` | Практика написания иероглифов |
-| 3 | 🧠 Упражнения | `/изучение` | Cloze, перестановки, выбор ответа |
-| 4 | 🎥 Видео | `/видео` | HSK видео с интерактивными субтитрами |
-| 5 | 📝 Тесты HSK | `/тесты` | Слушание, чтение для всех уровней |
-| 6 | 🗂️ Флешкарты | `/флешкарты` | Spaced Repetition (SM-2 алгоритм) |
-| 7 | 🗣️ Разговорник | `/разговорник` | Фразы для путешествий по категориям |
-| 8 | 📷 OCR | `/ocr` | Распознавание иероглифов с фото |
-| 9 | 📊 Прогресс | `/прогресс` | Статистика и достижения |
+| # | Функция | Описание |
+|---|---------|----------|
+| 1 | 📖 Словарь | Поиск иероглифов, пиньинь, порядок черт (stroke order) |
+| 2 | ✍️ Письмо | Практика написания иероглифов с анимацией |
+| 3 | 🧠 Упражнения | Cloze-тесты, перестановки, выбор ответа |
+| 4 | 🎥 Видео | HSK видео с интерактивными субтитрами |
+| 5 | 📝 Тесты HSK | Аудирование, чтение для всех уровней |
+| 6 | 🗂️ Флешкарты | Интервальное повторение (SM-2 алгоритм) |
+| 7 | 🗣️ Разговорник | Фразы для путешествий по категориям |
+| 8 | 🔤 Пиньинь | Уроки и тренажёр произношения тонов |
+| 9 | 📊 Прогресс | Статистика и достижения |
 
 ## 🔊 Аудио
 
-Каждый иероглиф можно прослушать:
-- **Кнопка 🔊** — воспроизведение аудио
-- Web Speech API для озвучки предложений
+- **Кнопка 🔊** — воспроизведение произношения иероглифов
+- Озвучка предложений через Web Speech API
+- Аудио для тонов пиньинь
 
-## 📁 Структура проекта
+## 🏗️ Архитектура
 
 ```
 HanziForge/
-├── backend/
+├── backend/                 # Python FastAPI
 │   ├── app/
 │   │   ├── main.py          # FastAPI приложение
 │   │   └── database.py      # SQLite модели
 │   ├── scripts/
-│   │   ├── populate_db.py   # Заполнение БД
-│   │   └── generate_audio.py # Генерация MP3
-│   ├── hanzi.db             # SQLite база данных
+│   │   └── populate_db.py   # Заполнение БД
+│   ├── static/audio/        # MP3 аудиофайлы
+│   ├── Dockerfile
 │   └── requirements.txt
-├── frontend/
+├── frontend/                # React + Vite
 │   ├── src/
+│   │   ├── pages/           # Страницы приложения
 │   │   ├── components/      # React компоненты
-│   │   ├── pages/           # Страницы (9 вкладок)
-│   │   ├── contexts/        # Auth контекст
 │   │   └── services/        # API сервис
-│   ├── index.html
+│   ├── Dockerfile
 │   └── package.json
-└── README.md
+├── docker-compose.yml       # Docker оркестрация
+├── DOCKER.md                # Инструкция Docker
+└── run.ps1                  # Скрипт запуска (Windows)
 ```
 
 ## 🗄️ База данных
@@ -108,7 +143,7 @@ SQLite с данными:
 - 80 фраз
 - 150 флешкарт
 
-## 🔧 API Endpoints
+## 🔧 API
 
 ```
 GET  /api/stats              # Статистика БД
@@ -122,14 +157,13 @@ POST /api/auth/register      # Регистрация
 POST /api/auth/login         # Авторизация
 ```
 
-API документация: http://localhost:5000/docs
+Swagger UI: http://localhost:5000/docs
 
 ## 🌙 Интерфейс
 
 - Тёмная тема по умолчанию
 - Полностью на русском языке
-- Адаптивный дизайн для мобильных
 
 ---
 
-**Hanzi Forge** — лучшее русско-китайское оффлайн приложение! 漢字鍛造 🔥
+**Hanzi Forge** — русско-китайское приложение для изучения языка 漢字鍛造 🔥
