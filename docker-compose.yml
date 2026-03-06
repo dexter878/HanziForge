@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: sqlite:////data/hanzi.db
+      SECRET_KEY: hanzi-forge-secret-key-2024
+    volumes:
+      - backend_data:/data
+      - teacher_audio:/app/static/audio/teacher
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      VITE_HOST: 0.0.0.0
+      VITE_API_PROXY_TARGET: http://backend:5000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  backend_data:
+  teacher_audio:

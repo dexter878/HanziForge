@@ -1,0 +1,320 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Базовые стили */
+:root {
+  --color-bg: #0f0f1a;
+  --color-card: #1a1a2e;
+  --color-border: #2a2a4a;
+  --color-text: #e4e4e7;
+  --color-muted: #71717a;
+  --color-accent: #dc2626;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-bg);
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+body {
+  font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+/* Утилиты для китайских иероглифов */
+.chinese-text {
+  font-family: 'Noto Sans SC', 'Microsoft YaHei', 'SimHei', sans-serif;
+}
+
+.hanzi-large {
+  font-size: 4rem;
+  line-height: 1.2;
+  font-weight: 400;
+}
+
+.hanzi-medium {
+  font-size: 2.5rem;
+  line-height: 1.3;
+}
+
+.hanzi-small {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+/* Пиньинь с тонами */
+.pinyin {
+  font-family: 'Inter', sans-serif;
+  font-style: italic;
+  color: #a1a1aa;
+}
+
+.pinyin-tone1 { color: #ef4444; } /* красный - высокий тон */
+.pinyin-tone2 { color: #f59e0b; } /* оранжевый - восходящий */
+.pinyin-tone3 { color: #10b981; } /* зелёный - низкий */
+.pinyin-tone4 { color: #3b82f6; } /* синий - падающий */
+.pinyin-tone5 { color: #6b7280; } /* серый - нейтральный */
+
+/* Карточки */
+@layer components {
+  .card {
+    @apply bg-dark-card border border-dark-border rounded-xl p-4 transition-all duration-200;
+  }
+  
+  .card:hover {
+    @apply border-primary-500/50 shadow-lg shadow-primary-500/10;
+  }
+  
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 justify-center;
+  }
+  
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white;
+  }
+  
+  .btn-secondary {
+    @apply bg-dark-border hover:bg-dark-border/80 text-dark-text;
+  }
+  
+  .btn-ghost {
+    @apply hover:bg-dark-border/50 text-dark-muted hover:text-dark-text;
+  }
+  
+  .input {
+    @apply w-full px-4 py-3 bg-dark-card border border-dark-border rounded-lg 
+           focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500
+           text-dark-text placeholder:text-dark-muted transition-all;
+  }
+  
+  .audio-btn {
+    @apply w-10 h-10 flex items-center justify-center rounded-full 
+           bg-primary-600/20 hover:bg-primary-600/40 text-primary-500
+           transition-all duration-200 cursor-pointer;
+  }
+  
+  .audio-btn:hover {
+    @apply scale-110;
+  }
+  
+  .audio-btn.playing {
+    @apply animate-pulse bg-primary-600 text-white;
+  }
+  
+  .nav-link {
+    @apply flex items-center gap-2 px-3 py-2 rounded-lg text-dark-muted 
+           hover:text-dark-text hover:bg-dark-border/50 transition-all;
+  }
+  
+  .nav-link.active {
+    @apply bg-primary-600/20 text-primary-500;
+  }
+  
+  .badge {
+    @apply px-2 py-0.5 text-xs rounded-full font-medium;
+  }
+  
+  .badge-hsk1 { @apply bg-green-500/20 text-green-400; }
+  .badge-hsk2 { @apply bg-blue-500/20 text-blue-400; }
+  .badge-hsk3 { @apply bg-yellow-500/20 text-yellow-400; }
+  .badge-hsk4 { @apply bg-orange-500/20 text-orange-400; }
+  .badge-hsk5 { @apply bg-red-500/20 text-red-400; }
+  .badge-hsk6 { @apply bg-purple-500/20 text-purple-400; }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Stroke order writer */
+.hanzi-writer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hanzi-writer-container svg {
+  background: var(--color-card);
+  border-radius: 12px;
+}
+
+/* Canvas для письма */
+.writing-canvas {
+  touch-action: none;
+  cursor: crosshair;
+  background: var(--color-card);
+  border-radius: 12px;
+  border: 2px dashed var(--color-border);
+}
+
+.writing-canvas:hover {
+  border-color: var(--color-accent);
+}
+
+.strokeorder-board {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+  background-position: center;
+}
+
+.worksheet-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.tianzi-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid rgba(148, 163, 184, 0.65);
+  border-radius: 10px;
+  background-color: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.8rem;
+}
+
+.tianzi-cell::before,
+.tianzi-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tianzi-cell::before {
+  background-image:
+    linear-gradient(to right, transparent 49.6%, rgba(148, 163, 184, 0.45) 49.6%, rgba(148, 163, 184, 0.45) 50.4%, transparent 50.4%),
+    linear-gradient(to bottom, transparent 49.6%, rgba(148, 163, 184, 0.45) 49.6%, rgba(148, 163, 184, 0.45) 50.4%, transparent 50.4%);
+}
+
+.tianzi-cell::after {
+  background-image:
+    linear-gradient(45deg, transparent 49.7%, rgba(148, 163, 184, 0.2) 49.7%, rgba(148, 163, 184, 0.2) 50.3%, transparent 50.3%),
+    linear-gradient(-45deg, transparent 49.7%, rgba(148, 163, 184, 0.2) 49.7%, rgba(148, 163, 184, 0.2) 50.3%, transparent 50.3%);
+}
+
+.tianzi-cell.guide {
+  color: rgba(226, 232, 240, 0.35);
+}
+
+.tianzi-cell:not(.guide) {
+  color: transparent;
+}
+
+/* Флешкарты */
+.flashcard {
+  perspective: 1000px;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border-radius: 1rem;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+}
+
+.flashcard-back {
+  transform: rotateY(180deg);
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+  .hanzi-large {
+    font-size: 3rem;
+  }
+  
+  .hanzi-medium {
+    font-size: 2rem;
+  }
+  
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    height: 100vh;
+    width: 280px;
+    z-index: 50;
+    transition: left 0.3s ease;
+  }
+  
+  .sidebar.open {
+    left: 0;
+  }
+
+  .worksheet-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Прогресс бар */
+.progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #dc2626, #f59e0b);
+  transition: width 0.5s ease;
+}
+
+/* Тосты/уведомления */
+.toast {
+  @apply fixed bottom-4 right-4 px-4 py-3 rounded-lg bg-dark-card border border-dark-border
+         shadow-xl animate-fade-in z-50;
+}
+
+.toast-success { @apply border-green-500/50; }
+.toast-error { @apply border-red-500/50; }
+.toast-info { @apply border-blue-500/50; }

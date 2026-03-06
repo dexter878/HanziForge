@@ -1,0 +1,27 @@
+{
+    "name": "Hanzi Forge",
+    "short_name": "HanziForge",
+    "description": "Русско-китайское приложение для изучения китайского языка",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#0f0f1a",
+    "theme_color": "#dc2626",
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "lang": "ru",
+    "categories": [
+        "education",
+        "reference"
+    ]
+}

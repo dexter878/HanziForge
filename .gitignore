@@ -1,0 +1,28 @@
+# Dependencies
+frontend/node_modules/
+frontend/dist/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temp
+.tmp/
+
+# Root-level DB duplicate (real DB lives in backend/hanzi.db)
+/hanzi.db
