@@ -1,10 +1,9 @@
 services:
   backend:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: ./backend
     ports:
-      - "5000:5000"
+      - "5003:5003"
     environment:
       DATABASE_URL: sqlite:////data/hanzi.db
       SECRET_KEY: hanzi-forge-secret-key-2024
@@ -15,13 +14,9 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
+      context: ./frontend
     ports:
-      - "5001:5001"
-    environment:
-      VITE_HOST: 0.0.0.0
-      VITE_API_PROXY_TARGET: http://backend:5000
+      - "5004:80"
     depends_on:
       - backend
     restart: unless-stopped

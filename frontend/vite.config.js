@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-const apiTarget = process.env.VITE_API_PROXY_TARGET || 'http://localhost:5000'
+const apiTarget = process.env.VITE_API_PROXY_TARGET || 'http://localhost:5003'
 const frontendHost = process.env.VITE_HOST || '127.0.0.1'
 const apiCachePattern = /^https?:\/\/[^/]+\/api\/.*/i
 const staticAudioCachePattern = /^https?:\/\/[^/]+\/static\/audio\/.*/i
@@ -66,7 +66,7 @@ export default defineConfig({
   ],
   server: {
     host: frontendHost,
-    port: 5001,
+    port: 5004,
     strictPort: true,
     proxy: {
       '/api': {

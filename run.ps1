@@ -52,8 +52,8 @@ if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-Assert-PortFree -Port 5000 -Name 'Backend'
-Assert-PortFree -Port 5001 -Name 'Frontend'
+Assert-PortFree -Port 5003 -Name 'Backend'
+Assert-PortFree -Port 5004 -Name 'Frontend'
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $backendDir = Join-Path $scriptDir 'backend'
@@ -94,11 +94,11 @@ if ($needsSeed) {
     }
 }
 
-Write-Host '[HanziForge] Starting backend on port 5000...' -ForegroundColor Yellow
+Write-Host '[HanziForge] Starting backend on port 5003...' -ForegroundColor Yellow
 $backendJob = Start-Job -ScriptBlock {
     param($dir)
     Set-Location $dir
-    python -m uvicorn app.main:app --host 0.0.0.0 --port 5000
+    python -m uvicorn app.main:app --host 0.0.0.0 --port 5003
 } -ArgumentList $backendDir
 
 Start-Sleep -Seconds 2
@@ -125,8 +125,8 @@ if (-not (Test-Path $nodeModulesPath)) {
 
 Write-Host ''
 Write-Host '============================================' -ForegroundColor Cyan
-Write-Host 'Frontend URL: http://localhost:5001' -ForegroundColor Green
-Write-Host 'Backend API : http://localhost:5000/docs' -ForegroundColor Blue
+Write-Host 'Frontend URL: http://localhost:5004' -ForegroundColor Green
+Write-Host 'Backend API : http://localhost:5003/docs' -ForegroundColor Blue
 Write-Host 'Press Ctrl+C to stop.' -ForegroundColor Yellow
 Write-Host '============================================' -ForegroundColor Cyan
 Write-Host ''

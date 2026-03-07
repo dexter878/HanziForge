@@ -33,8 +33,8 @@ docker compose up --build -d
 
 | Сервис | URL |
 |--------|-----|
-| 🌐 Приложение | http://localhost:5001 |
-| 📖 API документация | http://localhost:5000/docs |
+| 🌐 Приложение | http://localhost:5004 |
+| 📖 API документация | http://localhost:5003/docs |
 
 **Готово!** 🎉
 
@@ -87,13 +87,13 @@ docker compose up --build -d
 sudo apt install docker-compose-plugin
 ```
 
-### Порт 5000 или 5001 уже занят
+### Порт 5003 или 5004 уже занят
 
 Остановите процесс, который занимает порт, или измените порты в `docker-compose.yml`:
 ```yaml
 ports:
-  - "8080:5000"    # вместо 5000
-  - "8081:5001"    # вместо 5001
+  - "8080:5003"    # вместо 5003
+  - "8081:80"      # вместо 5004
 ```
 
 ### База данных пустая
@@ -120,9 +120,9 @@ docker compose up --build -d
 │                                         │
 │  ┌──────────────┐  ┌────────────────┐   │
 │  │   backend     │  │   frontend     │   │
-│  │  Python 3.11  │  │  Node.js 20   │   │
-│  │  FastAPI      │◄─│  Vite + React │   │
-│  │  :5000        │  │  :5001        │   │
+│  │  Python 3.11  │  │  nginx:alpine  │   │
+│  │  FastAPI      │◄─│  static files  │   │
+│  │  :5003        │  │  :5004→80      │   │
 │  └──────┬───────┘  └────────────────┘   │
 │         │                               │
 │  ┌──────┴───────┐                       │

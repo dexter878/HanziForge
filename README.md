@@ -31,8 +31,8 @@ docker compose up --build -d
 
 | Сервис | URL |
 |--------|-----|
-| 🌐 Приложение | http://localhost:5001 |
-| 📖 API документация | http://localhost:5000/docs |
+| 🌐 Приложение | http://localhost:5004 |
+| 📖 API документация | http://localhost:5003/docs |
 
 ### Остановить / Перезапустить
 
@@ -71,7 +71,7 @@ npm install
 **Терминал 1 — Backend:**
 ```bash
 cd backend
-python -m uvicorn app.main:app --host 0.0.0.0 --port 5000
+python -m uvicorn app.main:app --host 0.0.0.0 --port 5003
 ```
 
 **Терминал 2 — Frontend:**
@@ -85,7 +85,7 @@ npm run dev
 .\run.ps1
 ```
 
-Откройте **http://localhost:5001**
+Откройте **http://localhost:5004**
 
 ---
 
@@ -157,7 +157,7 @@ POST /api/auth/register      # Регистрация
 POST /api/auth/login         # Авторизация
 ```
 
-Swagger UI: http://localhost:5000/docs
+Swagger UI: http://localhost:5003/docs
 
 ## 🌙 Интерфейс
 
