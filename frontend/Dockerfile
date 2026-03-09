@@ -1,10 +1,15 @@
 # Stage 1: Build static assets
-FROM node:20-alpine AS build
+# Use Debian-based image for better native package compatibility during install.
+FROM node:20-bookworm-slim AS build
 
 WORKDIR /app
 
+ENV npm_config_audit=false \
+    npm_config_fund=false \
+    npm_config_update_notifier=false
+
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 
 COPY . .
 RUN npm run build
