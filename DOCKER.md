@@ -43,6 +43,30 @@ docker pull ghcr.io/dexter878/hanziforge-backend:latest
 docker pull ghcr.io/dexter878/hanziforge-frontend:latest
 ```
 
+Пример запуска на любой машине без локальной сборки:
+
+```bash
+docker network create hanziforge
+
+docker run -d \
+  --name backend \
+  --network hanziforge \
+  -p 5003:5003 \
+  -e DATABASE_URL=sqlite:////data/hanzi.db \
+  -e SECRET_KEY=hanzi-forge-secret-key-2024 \
+  -v hanziforge_backend_data:/data \
+  -v hanziforge_teacher_audio:/app/static/audio/teacher \
+  ghcr.io/dexter878/hanziforge-backend:latest
+
+docker run -d \
+  --name frontend \
+  --network hanziforge \
+  -p 5004:5004 \
+  -e NGINX_PORT=5004 \
+  -e BACKEND_UPSTREAM=backend:5003 \
+  ghcr.io/dexter878/hanziforge-frontend:latest
+```
+
 Если пакет в GitHub ещё приватный, для скачивания нужен логин:
 
 ```bash
@@ -115,7 +139,7 @@ sudo apt install docker-compose-plugin
 ```yaml
 ports:
   - "8080:5003"    # вместо 5003
-  - "8081:80"      # вместо 5004
+  - "8081:5004"    # вместо 5004
 ```
 
 ### База данных пустая
@@ -144,7 +168,7 @@ docker compose up --build -d
 │  │   backend     │  │   frontend     │   │
 │  │  Python 3.11  │  │  nginx:alpine  │   │
 │  │  FastAPI      │◄─│  static files  │   │
-│  │  :5003        │  │  :5004→80      │   │
+│  │  :5003        │  │  :5004→5004    │   │
 │  └──────┬───────┘  └────────────────┘   │
 │         │                               │
 │  ┌──────┴───────┐                       │

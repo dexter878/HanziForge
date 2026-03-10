@@ -19,8 +19,11 @@ services:
 
   frontend:
     image: ghcr.io/dexter878/hanziforge-frontend:latest
+    environment:
+      NGINX_PORT: 5004
+      BACKEND_UPSTREAM: backend:5003
     ports:
-      - "5004:80"
+      - "5004:5004"
     depends_on:
       backend:
         condition: service_healthy
