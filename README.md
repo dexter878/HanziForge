@@ -25,6 +25,22 @@ cd HanziForge
 docker compose up --build -d
 ```
 
+### Запуск из готовых образов GitHub Container Registry
+
+После публикации образов через GitHub Actions приложение можно запускать без локальной сборки:
+
+```bash
+docker compose -f docker-compose.ghcr.yml pull
+docker compose -f docker-compose.ghcr.yml up -d
+```
+
+Образы будут доступны по адресам:
+
+```text
+ghcr.io/dexter878/hanziforge-backend:latest
+ghcr.io/dexter878/hanziforge-frontend:latest
+```
+
 Первый запуск займёт 2–5 минут (скачивание образов, установка зависимостей, заполнение БД).
 
 ### Открыть

@@ -27,6 +27,28 @@ cd HanziForge
 docker compose up --build -d
 ```
 
+### Запуск без сборки, только из готовых образов
+
+Когда workflow `Publish Docker images` опубликует контейнеры в GitHub Container Registry, можно запускать приложение так:
+
+```bash
+docker compose -f docker-compose.ghcr.yml pull
+docker compose -f docker-compose.ghcr.yml up -d
+```
+
+Ручной запуск отдельных образов:
+
+```bash
+docker pull ghcr.io/dexter878/hanziforge-backend:latest
+docker pull ghcr.io/dexter878/hanziforge-frontend:latest
+```
+
+Если пакет в GitHub ещё приватный, для скачивания нужен логин:
+
+```bash
+docker login ghcr.io
+```
+
 Первый запуск займёт 2–5 минут (скачивание образов Python и Node.js, установка зависимостей, заполнение базы данных).
 
 ### 3. Откройте в браузере
