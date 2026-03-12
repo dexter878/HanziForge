@@ -34,8 +34,8 @@ export default {
                 }
             },
             fontFamily: {
-                chinese: ['Noto Sans SC', 'Microsoft YaHei', 'SimHei', 'sans-serif'],
-                sans: ['Inter', 'system-ui', 'sans-serif'],
+                chinese: ['HanziForge CJK', 'Microsoft YaHei', 'SimHei', 'sans-serif'],
+                sans: ['HanziForge UI', 'HanziForge CJK', 'system-ui', 'sans-serif'],
             },
             animation: {
                 'fade-in': 'fadeIn 0.3s ease-out',

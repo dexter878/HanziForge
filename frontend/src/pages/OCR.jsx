@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import AudioButton from '../components/AudioButton'
+import { getLocalTesseractOptions } from '../services/offlineAssets'
 
 export default function OCR() {
     const [image, setImage] = useState(null)
@@ -54,8 +55,15 @@ export default function OCR() {
         try {
             // Динамический импорт Tesseract.js
             const Tesseract = await import('tesseract.js')
+            const tesseractOptions = await getLocalTesseractOptions('chi_sim')
+
+            if (!tesseractOptions) {
+                setError('Локальная OCR-модель chi_sim не найдена. Добавьте файл chi_sim.traineddata(.gz) в frontend/public/tesseract/lang.')
+                return
+            }
 
             const result = await Tesseract.recognize(imageSrc, 'chi_sim', {
+                ...tesseractOptions,
                 logger: m => {
                     if (m.status === 'recognizing text') {
                         // Можно показать прогресс

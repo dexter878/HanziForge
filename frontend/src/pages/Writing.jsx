@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import api from '../services/api'
 import AudioButton from '../components/AudioButton'
 import { trackProgress } from '../services/progress'
+import { createLocalHanziWriterLoader, isMissingLocalHanziWriterData } from '../services/offlineAssets'
 
 const WRITING_MODES = [
     { id: 'demo', label: 'Демонстрация' },
@@ -52,6 +53,7 @@ export default function Writing() {
     const [isLoadingWriter, setIsLoadingWriter] = useState(false)
     const [isAnimating, setIsAnimating] = useState(false)
     const [manualChar, setManualChar] = useState('')
+    const [writerError, setWriterError] = useState('')
     const writerRef = useRef(null)
     const writerInstanceRef = useRef(null)
 
@@ -162,6 +164,7 @@ export default function Writing() {
 
         setIsLoadingWriter(true)
         setIsAnimating(false)
+        setWriterError('')
         destroyWriter()
 
         try {
@@ -169,6 +172,7 @@ export default function Writing() {
             const isQuiz = writerMode === 'quiz'
 
             const writer = HanziWriter.create(writerRef.current, selectedChar.char, {
+                charDataLoader: createLocalHanziWriterLoader(),
                 width: 340,
                 height: 340,
                 padding: 24,
@@ -192,6 +196,11 @@ export default function Writing() {
                 createQuizSession()
             }
         } catch (error) {
+            if (isMissingLocalHanziWriterData(error)) {
+                setWriterError('Для этого иероглифа не добавлен локальный stroke-order JSON в frontend/public/hanzi-writer-data.')
+            } else {
+                setWriterError('Локальный модуль письма не удалось запустить.')
+            }
             console.error('Ошибка инициализации письма:', error)
         } finally {
             setIsLoadingWriter(false)
@@ -391,6 +400,12 @@ export default function Writing() {
 
                                         {isLoadingWriter && (
                                             <div className="text-center text-sm text-dark-muted">Загрузка анимации штрихов...</div>
+                                        )}
+
+                                        {writerError && (
+                                            <div className="mx-auto max-w-[420px] rounded-lg border border-yellow-500/40 bg-yellow-500/10 px-3 py-2 text-sm text-yellow-200">
+                                                {writerError}
+                                            </div>
                                         )}
 
                                         <div className="flex justify-center gap-2 flex-wrap">

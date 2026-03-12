@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import api from '../services/api'
 import AudioButton from '../components/AudioButton'
+import { createLocalHanziWriterLoader, isMissingLocalHanziWriterData } from '../services/offlineAssets'
 
 export default function Dictionary() {
     const { char } = useParams()
@@ -11,6 +12,7 @@ export default function Dictionary() {
     const [selectedChar, setSelectedChar] = useState(null)
     const [loading, setLoading] = useState(false)
     const [hskFilter, setHskFilter] = useState(null)
+    const [writerError, setWriterError] = useState('')
     const writerRef = useRef(null)
     const writerInstanceRef = useRef(null)
 
@@ -83,9 +85,12 @@ export default function Dictionary() {
             writerRef.current.innerHTML = ''
         }
 
+        setWriterError('')
+
         try {
             const HanziWriter = (await import('hanzi-writer')).default
             writerInstanceRef.current = HanziWriter.create(writerRef.current, character, {
+                charDataLoader: createLocalHanziWriterLoader(),
                 width: 200,
                 height: 200,
                 padding: 10,
@@ -99,6 +104,11 @@ export default function Dictionary() {
                 showCharacter: true,
             })
         } catch (error) {
+            if (isMissingLocalHanziWriterData(error)) {
+                setWriterError('Для этого иероглифа не добавлен локальный stroke-order JSON в frontend/public/hanzi-writer-data.')
+            } else {
+                setWriterError('Локальный модуль анимации штрихов не удалось запустить.')
+            }
             console.error('Ошибка инициализации hanzi-writer:', error)
         }
     }
@@ -138,6 +148,12 @@ export default function Dictionary() {
                                 className="hanzi-writer-container mb-4"
                                 style={{ minHeight: '200px', minWidth: '200px' }}
                             />
+
+                            {writerError && (
+                                <div className="mb-4 max-w-[320px] rounded-lg border border-yellow-500/40 bg-yellow-500/10 px-3 py-2 text-sm text-yellow-200">
+                                    {writerError}
+                                </div>
+                            )}
 
                             <div className="flex gap-2">
                                 <button onClick={animateStrokes} className="btn btn-primary">

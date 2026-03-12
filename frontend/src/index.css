@@ -2,6 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'HanziForge UI';
+  src: url('/fonts/hanziforge-ui-regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HanziForge UI';
+  src: url('/fonts/hanziforge-ui-semibold.ttf');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HanziForge UI';
+  src: url('/fonts/hanziforge-ui-italic.ttf');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HanziForge CJK';
+  src: url('/fonts/hanziforge-cjk-regular.ttc');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HanziForge CJK';
+  src: url('/fonts/hanziforge-cjk-bold.ttc');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Базовые стили */
 :root {
   --color-bg: #0f0f1a;
@@ -32,7 +72,7 @@
 }
 
 body {
-  font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  font-family: 'HanziForge UI', 'HanziForge CJK', system-ui, sans-serif;
   background: var(--color-bg);
   color: var(--color-text);
   min-height: 100vh;
@@ -40,7 +80,7 @@ body {
 
 /* Утилиты для китайских иероглифов */
 .chinese-text {
-  font-family: 'Noto Sans SC', 'Microsoft YaHei', 'SimHei', sans-serif;
+  font-family: 'HanziForge CJK', 'Microsoft YaHei', 'SimHei', sans-serif;
 }
 
 .hanzi-large {
@@ -61,7 +101,7 @@ body {
 
 /* Пиньинь с тонами */
 .pinyin {
-  font-family: 'Inter', sans-serif;
+  font-family: 'HanziForge UI', sans-serif;
   font-style: italic;
   color: #a1a1aa;
 }
